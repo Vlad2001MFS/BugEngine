@@ -18,6 +18,14 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Core\BgCommon.h" />
+    <ClInclude Include="Core\BgString.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Core\BgCommon.cpp" />
+    <ClCompile Include="Core\BgString.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{B4061419-875D-44B9-91AB-6DCDFB586D72}</ProjectGuid>
