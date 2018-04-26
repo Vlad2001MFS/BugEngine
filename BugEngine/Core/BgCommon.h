@@ -37,17 +37,6 @@ typedef unsigned short     BgUint16;
 typedef unsigned int       BgUint32;
 typedef unsigned long long BgUint64;
 
-class BgException {
-public:
-    BgException(const char *fmt, ...);
-    ~BgException();
-
-    const char *GetMessage() const;
-
-private:
-    char *mMessage;
-};
-
 enum class BgLogType {
     Info,
     Warn,

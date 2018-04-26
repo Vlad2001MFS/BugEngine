@@ -6,6 +6,7 @@ BgString::BgString() : mData(new char[1]) {
 }
 
 BgString::BgString(const char * str) {
+    BG_ASSERT(str);
     mData = new char[strlen(str) + 1];
     strcpy(mData, str);
 }

@@ -2,22 +2,6 @@
 #include <cstdarg>
 #include <cstdio>
 
-BgException::BgException(const char * fmt, ...) {
-    va_list args;
-    va_start(args, fmt);
-    mMessage = new char[_vscprintf(fmt, args) + 1];
-    vsprintf(mMessage, fmt, args);
-    va_end(args);
-}
-
-BgException::~BgException() {
-    BG_DELETE_ARRAY(mMessage);
-}
-
-const char * BgException::GetMessage() const {
-    return mMessage;
-}
-
 void BgDebugLog(BgLogType type, const char * file, int line, const char * fmt, ...) {
     static FILE *logFile = nullptr;
     static const char logFilename[] = "BugEngine.log";
