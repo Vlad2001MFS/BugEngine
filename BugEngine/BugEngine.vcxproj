@@ -22,13 +22,17 @@
     <ClInclude Include="BugEngine.h" />
     <ClInclude Include="Core\BgCommon.h" />
     <ClInclude Include="Core\BgString.h" />
+    <ClInclude Include="Core\BgVector.h" />
+    <ClInclude Include="Input\BgInputDevice.h" />
     <ClInclude Include="Math\BgIntVector2.h" />
+    <ClInclude Include="Math\BgMath.h" />
     <ClInclude Include="Window\BgEvent.h" />
     <ClInclude Include="Window\BgWindow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Core\BgCommon.cpp" />
     <ClCompile Include="Core\BgString.cpp" />
+    <ClCompile Include="Input\BgInputDevice.cpp" />
     <ClCompile Include="Math\BgIntVector2.cpp" />
     <ClCompile Include="Window\BgWindow.cpp" />
   </ItemGroup>

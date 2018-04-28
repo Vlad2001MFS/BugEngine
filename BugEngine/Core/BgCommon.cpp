@@ -1,4 +1,5 @@
 #include "BgCommon.h"
+#include <SDL2/SDL.h>
 #include <cstdarg>
 #include <cstdio>
 
@@ -48,4 +49,27 @@ void BgDebugLog(BgLogType type, const char * file, int line, const char * fmt, .
     }
     va_end(args);
     fflush(logFile);
+}
+
+void InitTimer() {
+    static bool first = true;
+    if (first) {
+        first = false;
+        SDL_Init(SDL_INIT_TIMER);
+    }
+}
+
+BgUint64 BgTimer::Start() {
+    InitTimer();
+    return SDL_GetPerformanceCounter();
+}
+
+double BgTimer::GetMs(BgUint64 startTime) {
+    InitTimer();
+    return (double)(SDL_GetPerformanceCounter() - startTime) / SDL_GetPerformanceFrequency() * 1000.0f;
+}
+
+double BgTimer::GetSec(BgUint64 startTime) {
+    InitTimer();
+    return (double)(SDL_GetPerformanceCounter() - startTime) / SDL_GetPerformanceFrequency();
 }

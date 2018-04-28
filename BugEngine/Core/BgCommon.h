@@ -28,6 +28,11 @@ private: \
 #define BG_LOG_ERROR(fmt, ...) do { BgDebugLog(BgLogType::Error, __FILE__, __LINE__, fmt, __VA_ARGS__); abort(); } while(0)
 #define BG_ASSERT(expr) do { if (expr) { } else { BgDebugLog(BgLogType::AssertionFailed, __FILE__, __LINE__, #expr); abort(); } } while(0)
 
+#define BG_FLAG_EXIST(flags, flag) (((flags) & (flag)) == (flag))
+
+#define BG_MAP_RGBA(r, g, b, a) (((b) << 0) | ((g) << 8) | ((r) << 16) | ((a) << 24))
+#define BG_MAP_RGB(r, g, b) (((b) << 0) | ((g) << 8) | ((r) << 16) | (255 << 24))
+
 typedef signed char        BgInt8;
 typedef short              BgInt16;
 typedef int                BgInt32;
@@ -45,5 +50,15 @@ enum class BgLogType {
 };
 
 void BgDebugLog(BgLogType type, const char *file, int line, const char *fmt, ...);
+
+class BgTimer {
+    BG_STATIC_CLASS(BgTimer)
+
+public:
+    static BgUint64 Start();
+    static double GetMs(BgUint64 startTime);
+    static double GetSec(BgUint64 startTime);
+};
+
 
 #endif

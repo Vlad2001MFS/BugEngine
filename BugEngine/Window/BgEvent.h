@@ -8,11 +8,9 @@ enum class BgEventType {
     Resize,
     LostFocus,
     GetFocus,
-    KeyDown,
-    KeyUp,
+    Key,
     MouseWheel,
-    MouseButtonDown,
-    MouseButtonUp,
+    MouseButton,
     MouseMove
 };
 
@@ -35,42 +33,55 @@ enum class BgKeyCode {
     LControl, RControl, LShift, RShift, LAlt, RAlt, LSystem, RSystem
 };
 
+enum class BgKeyState {
+    Pressed,
+    Released
+};
+
+struct BgResizeEvent {
+    BgUint32 width;
+    BgUint32 height;
+};
+struct BgKeyboardEvent {
+    BgKeyCode code;
+    BgKeyState state;
+    bool alt;
+    bool control;
+    bool shift;
+    bool system;
+};
+struct BgMouseWheelEvent {
+    int direction;
+    int x;
+    int y;
+    bool leftButton;
+    bool middleButton;
+    bool rightButton;
+    bool xButton1;
+    bool xButton2;
+    bool control;
+    bool shift;
+};
+struct BgMouseButtonEvent {
+    BgMouseButton btn;
+    BgKeyState state;
+    BgUint32 x;
+    BgUint32 y;
+};
+struct BgMouseMoveEvent {
+    BgUint32 x;
+    BgUint32 y;
+    int deltaX, deltaY;
+};
+
 struct BgEvent {
     BgEventType type;
     union {
-        struct {
-            BgUint32 width;
-            BgUint32 height;
-        } resize;
-        struct {
-            BgKeyCode code;
-            bool alt;
-            bool control;
-            bool shift;
-            bool system;
-        } key;
-        struct {
-            int direction;
-            int x;
-            int y;
-            bool control;
-            bool leftButton;
-            bool middleButton;
-            bool rightButton;
-            bool shift;
-            bool xButton1;
-            bool xButton2;
-        } mouseWheel;
-        struct {
-            BgMouseButton btn;
-            BgUint32 x;
-            BgUint32 y;
-        } mouseButton;
-        struct {
-            BgUint32 x;
-            BgUint32 y;
-            int deltaX, deltaY;
-        } mouseMove;
+        BgResizeEvent resize;
+        BgKeyboardEvent key;
+        BgMouseWheelEvent mouseWheel;
+        BgMouseButtonEvent mouseButton;
+        BgMouseMoveEvent mouseMove;
     };
 };
 
