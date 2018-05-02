@@ -13,6 +13,7 @@ public:
 
     bool ProcessEvent(BgEvent &e);
     void SwapBuffers();
+    void SetTitle(const BgString &title);
     BgIntVector2 GetPosition() const;
     BgIntVector2 GetSize() const;
     BgIntVector2 GetCenter() const;

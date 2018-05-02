@@ -49,22 +49,22 @@ BgInputDevice::~BgInputDevice() { }
 void BgInputDevice::ProcessEvent(const BgEvent & e) {
     switch (e.type) {
         case BgEventType::Key:
-            for (int i = 0; i < mKeyboardCallbacks.GetSize(); i++) {
+            for (BgSize i = 0; i < mKeyboardCallbacks.GetSize(); i++) {
                 mKeyboardCallbacks[i](e.key);
             }
             break;
         case BgEventType::MouseWheel:
-            for (int i = 0; i < mMouseWheelCallbacks.GetSize(); i++) {
+            for (BgSize i = 0; i < mMouseWheelCallbacks.GetSize(); i++) {
                 mMouseWheelCallbacks[i](e.mouseWheel);
             }
             break;
         case BgEventType::MouseButton:
-            for (int i = 0; i < mMouseButtonCallbacks.GetSize(); i++) {
+            for (BgSize i = 0; i < mMouseButtonCallbacks.GetSize(); i++) {
                 mMouseButtonCallbacks[i](e.mouseButton);
             }
             break;
         case BgEventType::MouseMove:
-            for (int i = 0; i < mMouseMoveCallbacks.GetSize(); i++) {
+            for (BgSize i = 0; i < mMouseMoveCallbacks.GetSize(); i++) {
                 mMouseMoveCallbacks[i](e.mouseMove);
             }
             break;

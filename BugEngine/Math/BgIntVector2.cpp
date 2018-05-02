@@ -6,6 +6,15 @@ BgIntVector2::BgIntVector2()
 BgIntVector2::BgIntVector2(int x, int y) 
     : x(x), y(y) { }
 
+BgIntVector2::BgIntVector2(const BgVector2 & v)
+    : x((int)v.x), y((int)v.y) { }
+
+BgIntVector2 & BgIntVector2::operator=(const BgVector2 & rhs) {
+    this->x = (int)rhs.x;
+    this->y = (int)rhs.y;
+    return *this;
+}
+
 int BgIntVector2::operator[](BgUint32 idx) const {
     BG_ASSERT(idx < 2);
     return (&this->x)[idx];
@@ -26,10 +35,6 @@ BgIntVector2 operator+(const BgIntVector2 & lhs, const BgIntVector2 & rhs) {
 
 BgIntVector2 operator-(const BgIntVector2 & lhs, const BgIntVector2 & rhs) {
     return BgIntVector2(lhs.x - rhs.x, lhs.y - rhs.y);
-}
-
-BgIntVector2 operator*(int lhs, const BgIntVector2 & rhs) {
-    return BgIntVector2(lhs*rhs.x, lhs*rhs.y);
 }
 
 BgIntVector2 operator*(const BgIntVector2 & lhs, int rhs) {

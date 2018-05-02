@@ -400,6 +400,10 @@ void BgWindow::SwapBuffers() {
     SDL_UpdateWindowSurface((SDL_Window*)mWindow);
 }
 
+void BgWindow::SetTitle(const BgString & title) {
+    SDL_SetWindowTitle((SDL_Window*)mWindow, title.GetData());
+}
+
 BgIntVector2 BgWindow::GetPosition() const {
     BgIntVector2 v;
     SDL_GetWindowPosition((SDL_Window*)mWindow, &v.x, &v.y);

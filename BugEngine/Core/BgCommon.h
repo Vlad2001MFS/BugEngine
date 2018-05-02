@@ -41,6 +41,7 @@ typedef unsigned char      BgUint8;
 typedef unsigned short     BgUint16;
 typedef unsigned int       BgUint32;
 typedef unsigned long long BgUint64;
+typedef BgUint64 BgSize;
 
 enum class BgLogType {
     Info,

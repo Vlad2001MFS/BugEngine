@@ -13,25 +13,25 @@ public:
         BG_DELETE_ARRAY(mData);
     }
 
-    const T &operator[](const BgUint32 idx) const {
+    const T &operator[](const BgSize idx) const {
         BG_ASSERT(idx < mSize);
         return mData[idx];
     }
 
-    T &operator[](const BgUint32 idx) {
+    T &operator[](const BgSize idx) {
         BG_ASSERT(idx < mSize);
         return mData[idx];
     }
 
     void Append(const T &value) {
         if ((mSize + 1) > mCapacity) {
-            Reserve((mCapacity + 1)*BG_MATH_SQRT2);
+            Reserve((BgSize)((mCapacity + 1)*BG_MATH_SQRT2));
         }
         mData[mSize] = value;
         mSize++;
     }
 
-    void Reserve(BgUint32 capacity) {
+    void Reserve(BgSize capacity) {
         if (capacity > mCapacity) {
             T *data = new T[capacity];
             if (mData) {
@@ -43,17 +43,17 @@ public:
         }
     }
 
-    BgUint32 GetSize() const {
+    BgSize GetSize() const {
         return mSize;
     }
 
-    BgUint32 GetCapacity() const {
+    BgSize GetCapacity() const {
         return mCapacity;
     }
 
 private:
     T *mData;
-    BgUint32 mSize, mCapacity;
+    BgSize mSize, mCapacity;
 };
 
 #endif
