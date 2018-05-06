@@ -42,6 +42,18 @@ public:
         return v0*(1 - t) + v1*t;
     }
 
+    template<typename T> static T Sq(T value) {
+        return value*value;
+    }
+
+    static float ToRadians(float degrees) {
+        return degrees / 180*BG_MATH_PI;
+    }
+
+    static float ToDegrees(float radians) {
+        return radians*180 / BG_MATH_PI;
+    }
+
     static float Sin(float radians) {
         return std::sin(radians);
     }
@@ -52,6 +64,18 @@ public:
 
     static float Floor(float value) {
         return std::floor(value);
+    }
+
+    static float Ceil(float value) {
+        return std::ceil(value);
+    }
+
+    static float Round(float value) {
+        return std::round(value);
+    }
+
+    static float Sqrt(float value) {
+        return sqrtf(value);
     }
 };
 

@@ -51,9 +51,9 @@ struct BgKeyboardEvent {
     bool system;
 };
 struct BgMouseWheelEvent {
-    int direction;
-    int x;
-    int y;
+    BgInt32 direction;
+    BgInt32 x;
+    BgInt32 y;
     bool leftButton;
     bool middleButton;
     bool rightButton;
@@ -71,7 +71,7 @@ struct BgMouseButtonEvent {
 struct BgMouseMoveEvent {
     BgUint32 x;
     BgUint32 y;
-    int deltaX, deltaY;
+    BgInt32 deltaX, deltaY;
 };
 
 struct BgEvent {

@@ -1,4 +1,5 @@
 ﻿#include "BgTexture.h"
+#include "../Math/BgMath.h"
 #include <SDL2/SDL.h>
 
 BgTexture::BgTexture(const BgString & filename) {
@@ -9,7 +10,7 @@ BgTexture::BgTexture(const BgString & filename) {
     mSize.y = surface->h;
     mData = new BgUint32[mSize.x*mSize.y];
     typedef BgUint8 SRCColor[3];
-    SRCColor *src = (SRCColor*)surface->pixels;
+    SRCColor *src = static_cast<SRCColor*>(surface->pixels);
     BgUint32 *dst = mData;
     for (int i = 0; i < mSize.x*mSize.y; i++) {
         dst[i] = BG_MAP_RGBA(src[i][2], src[i][1], src[i][0], 255);
@@ -22,8 +23,8 @@ BgTexture::~BgTexture() {
 }
 
 BgUint32 BgTexture::GetPixel(BgUint32 x, BgUint32 y) const {
-    BG_ASSERT(x < mSize.x);
-    BG_ASSERT(y < mSize.y);
+    BG_ASSERT(x < static_cast<BgUint32>(mSize.x));
+    BG_ASSERT(y < static_cast<BgUint32>(mSize.y));
     return mData[y*mSize.x + x];
 }
 

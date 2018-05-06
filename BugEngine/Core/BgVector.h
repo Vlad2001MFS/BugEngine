@@ -25,7 +25,7 @@ public:
 
     void Append(const T &value) {
         if ((mSize + 1) > mCapacity) {
-            Reserve((BgSize)((mCapacity + 1)*BG_MATH_SQRT2));
+            Reserve(static_cast<BgSize>((mCapacity + 1)*BG_MATH_SQRT2));
         }
         mData[mSize] = value;
         mSize++;

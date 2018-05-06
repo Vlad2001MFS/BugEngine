@@ -264,18 +264,18 @@ BgWindow::BgWindow(const BgString & title, const BgIntVector2 & size, bool fulls
         mWindow = SDL_CreateWindow(title.GetData(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, size.x, size.y, SDL_WINDOW_SHOWN);
     }
     BG_ASSERT(mWindow);
-    SDL_Surface *surface = SDL_GetWindowSurface((SDL_Window*)mWindow);
+    SDL_Surface *surface = SDL_GetWindowSurface(static_cast<SDL_Window*>(mWindow));
     BG_ASSERT(surface);
-    mSurface = (BgUint32*)surface->pixels;
+    mSurface = static_cast<BgUint32*>(surface->pixels);
 }
 
 BgWindow::~BgWindow() {
-    SDL_DestroyWindow((SDL_Window*)mWindow);
+    SDL_DestroyWindow(static_cast<SDL_Window*>(mWindow));
     SDL_Quit();
 }
 
 bool BgWindow::ProcessEvent(BgEvent & e) {
-    SDL_Event sdlEvent;
+    SDL_Event sdlEvent = { 0 };
     if (SDL_PollEvent(&sdlEvent)) {
         switch (sdlEvent.type) {
             case SDL_QUIT:
@@ -324,12 +324,17 @@ bool BgWindow::ProcessEvent(BgEvent & e) {
                 e.mouseWheel.direction = sdlEvent.wheel.direction;
                 e.mouseWheel.x = sdlEvent.wheel.x;
                 e.mouseWheel.y = sdlEvent.wheel.y;
-                unsigned int mouseState = SDL_GetMouseState(nullptr, nullptr);
-                e.mouseWheel.leftButton = (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) == SDL_BUTTON(SDL_BUTTON_LEFT);
+                BgUint32 mouseState = SDL_GetMouseState(nullptr, nullptr);
+                e.mouseWheel.leftButton   = BG_FLAG_EXIST(mouseState, SDL_BUTTON(SDL_BUTTON_LEFT  ));
+                e.mouseWheel.middleButton = BG_FLAG_EXIST(mouseState, SDL_BUTTON(SDL_BUTTON_MIDDLE));
+                e.mouseWheel.rightButton  = BG_FLAG_EXIST(mouseState, SDL_BUTTON(SDL_BUTTON_RIGHT ));
+                e.mouseWheel.xButton1     = BG_FLAG_EXIST(mouseState, SDL_BUTTON(SDL_BUTTON_X1    ));
+                e.mouseWheel.xButton2     = BG_FLAG_EXIST(mouseState, SDL_BUTTON(SDL_BUTTON_X2    ));
+                /*e.mouseWheel.leftButton = (mouseState & SDL_BUTTON(SDL_BUTTON_LEFT)) == SDL_BUTTON(SDL_BUTTON_LEFT);
                 e.mouseWheel.middleButton = (mouseState & SDL_BUTTON(SDL_BUTTON_MIDDLE)) == SDL_BUTTON(SDL_BUTTON_MIDDLE);
                 e.mouseWheel.rightButton = (mouseState & SDL_BUTTON(SDL_BUTTON_RIGHT)) == SDL_BUTTON(SDL_BUTTON_RIGHT);
                 e.mouseWheel.xButton1 = (mouseState & SDL_BUTTON(SDL_BUTTON_X1)) == SDL_BUTTON(SDL_BUTTON_X1);
-                e.mouseWheel.xButton2 = (mouseState & SDL_BUTTON(SDL_BUTTON_X2)) == SDL_BUTTON(SDL_BUTTON_X2);
+                e.mouseWheel.xButton2 = (mouseState & SDL_BUTTON(SDL_BUTTON_X2)) == SDL_BUTTON(SDL_BUTTON_X2);*/
                 e.mouseWheel.control = SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_LCTRL] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_RCTRL];
                 e.mouseWheel.shift = SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_LSHIFT] || SDL_GetKeyboardState(nullptr)[SDL_SCANCODE_RSHIFT];
                 break;
@@ -372,7 +377,7 @@ bool BgWindow::ProcessEvent(BgEvent & e) {
             }
             case SDL_MOUSEMOTION:
             {
-                static int lastX = 0, lastY = 0;
+                static BgInt32 lastX = 0, lastY = 0;
                 static bool first = true;
                 if (first) {
                     first = false;
@@ -397,22 +402,22 @@ bool BgWindow::ProcessEvent(BgEvent & e) {
 }
 
 void BgWindow::SwapBuffers() {
-    SDL_UpdateWindowSurface((SDL_Window*)mWindow);
+    SDL_UpdateWindowSurface(static_cast<SDL_Window*>(mWindow));
 }
 
 void BgWindow::SetTitle(const BgString & title) {
-    SDL_SetWindowTitle((SDL_Window*)mWindow, title.GetData());
+    SDL_SetWindowTitle(static_cast<SDL_Window*>(mWindow), title.GetData());
 }
 
 BgIntVector2 BgWindow::GetPosition() const {
     BgIntVector2 v;
-    SDL_GetWindowPosition((SDL_Window*)mWindow, &v.x, &v.y);
+    SDL_GetWindowPosition(static_cast<SDL_Window*>(mWindow), &v.x, &v.y);
     return v;
 }
 
 BgIntVector2 BgWindow::GetSize() const {
     BgIntVector2 v;
-    SDL_GetWindowSize((SDL_Window*)mWindow, &v.x, &v.y);
+    SDL_GetWindowSize(static_cast<SDL_Window*>(mWindow), &v.x, &v.y);
     return v;
 }
 

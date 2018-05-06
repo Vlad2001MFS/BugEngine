@@ -92,7 +92,7 @@ void BgInputDevice::AddCallback(BgMouseMoveCallback callback) {
 }
 
 void BgInputDevice::SetMousePosition(const BgIntVector2 & pos) { 
-    SDL_WarpMouseInWindow((SDL_Window*)mWindow->GetHandle(), pos.x, pos.y);
+    SDL_WarpMouseInWindow(static_cast<SDL_Window*>(mWindow->GetHandle()), pos.x, pos.y);
 }
 
 void BgInputDevice::SetMouseVisible(bool visible) { 
@@ -110,10 +110,9 @@ bool BgInputDevice::IsMouseVisible() const {
 }
 
 bool BgInputDevice::IsKeyDown(BgKeyCode key) const {
-    return SDL_GetKeyboardState(nullptr)[gKeyCodes[(BgUint32)key]];
+    return SDL_GetKeyboardState(nullptr)[gKeyCodes[static_cast<BgSize>(key)]];
 }
 
 bool BgInputDevice::IsMouseButtonDown(BgMouseButton btn) const {
-    return BG_FLAG_EXIST(SDL_GetMouseState(nullptr, nullptr), SDL_BUTTON(gMouseButtons[(BgUint32)btn]));
-    //return (SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(gMouseButtons[static_cast<BgUint32>(button)])) == SDL_BUTTON(gMouseButtons[static_cast<BgUint32>(button)]);
+    return BG_FLAG_EXIST(SDL_GetMouseState(nullptr, nullptr), SDL_BUTTON(gMouseButtons[static_cast<BgSize>(btn)]));
 }

@@ -3,7 +3,7 @@
 #include <cstdarg>
 #include <cstdio>
 
-void BgDebugLog(BgLogType type, const char * file, int line, const char * fmt, ...) {
+void BgDebugLog(BgLogType type, const char * file, BgInt32 line, const char * fmt, ...) {
     static FILE *logFile = nullptr;
     static const char logFilename[] = "BugEngine.log";
     static bool first = true;
@@ -66,10 +66,10 @@ BgUint64 BgTimer::Start() {
 
 double BgTimer::GetMs(BgUint64 startTime) {
     InitTimer();
-    return (double)(SDL_GetPerformanceCounter() - startTime) / SDL_GetPerformanceFrequency() * 1000.0f;
+    return static_cast<double>(SDL_GetPerformanceCounter() - startTime) / SDL_GetPerformanceFrequency() * 1000.0f;
 }
 
 double BgTimer::GetSec(BgUint64 startTime) {
     InitTimer();
-    return (double)(SDL_GetPerformanceCounter() - startTime) / SDL_GetPerformanceFrequency();
+    return static_cast<double>(SDL_GetPerformanceCounter() - startTime) / SDL_GetPerformanceFrequency();
 }
