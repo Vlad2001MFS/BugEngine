@@ -4,6 +4,7 @@
 #include "BgCommon.h"
 #include "../Math/BgMath.h"
 #include <cstring>
+#include <vector>
 
 template<typename T>
 class BgVector {
@@ -23,6 +24,13 @@ public:
         return mData[idx];
     }
 
+    void Clear() {
+        for (int i = 0; i < mSize; i++) {
+            mData[i].~T();
+        }
+        mSize = 0;
+    }
+
     void Append(const T &value) {
         if ((mSize + 1) > mCapacity) {
             Reserve(static_cast<BgSize>((mCapacity + 1)*BG_MATH_SQRT2));
@@ -35,7 +43,10 @@ public:
         if (capacity > mCapacity) {
             T *data = new T[capacity];
             if (mData) {
-                memcpy(data, mData, sizeof(T)*mSize);
+                //memcpy(data, mData, sizeof(T)*mSize);
+                for (int i = 0; i < mSize; i++) {
+                    data[i] = mData[i];
+                }
                 BG_DELETE_ARRAY(mData);
             }
             mData = data;
