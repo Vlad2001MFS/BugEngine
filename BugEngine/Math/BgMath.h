@@ -2,7 +2,7 @@
 #define BG_MATH_H
 
 #include "../Core/BgCommon.h"
-#include <cmath>
+#include <math.h>
 
 constexpr float BG_MATH_E           = 2.71828182845904523536f;   // e
 constexpr float BG_MATH_LOG2E       = 1.44269504088896340736f;   // log2(e)
@@ -22,59 +22,61 @@ class BgMath {
     BG_STATIC_CLASS(BgMath)
 
 public:
-    template<typename T> static T Min(T a, T b) {
+    template<typename T> BG_FORCEINLINE static T Min(T a, T b) {
         return a < b ? a : b;
     }
 
-    template<typename T> static T Max(T a, T b) {
+    template<typename T> BG_FORCEINLINE static T Max(T a, T b) {
         return a > b ? a : b;
     }
 
-    template<typename T> static T Clamp(T value, T min, T max) {
+    template<typename T> BG_FORCEINLINE static T Clamp(T value, T min, T max) {
         return Min(Max(min, value), max);
     }
 
-    template<typename T> static T Abs(T value) {
-        return std::abs(value);
+    template<typename T> BG_FORCEINLINE static T Abs(T value) {
+        return value < 0 ? -value : value;
     }
 
-    template<typename T> static T Lerp(T v0, T v1, T t) {
+    template<typename T> BG_FORCEINLINE static T Lerp(T v0, T v1, T t) {
         return v0*(1 - t) + v1*t;
     }
 
-    template<typename T> static T Sq(T value) {
+    template<typename T> BG_FORCEINLINE static T Sq(T value) {
         return value*value;
     }
 
-    static float ToRadians(float degrees) {
-        return degrees / 180*BG_MATH_PI;
+    template<typename T> BG_FORCEINLINE static float ToRadians(T degrees) {
+        static constexpr float a = 1 / 180*BG_MATH_PI;
+        return degrees*a;
     }
 
-    static float ToDegrees(float radians) {
-        return radians*180 / BG_MATH_PI;
+    template<typename T> BG_FORCEINLINE static T ToDegrees(T radians) {
+        static constexpr float a = 180 / BG_MATH_PI;
+        return radians*a;
     }
 
-    static float Sin(float radians) {
-        return std::sin(radians);
+    BG_FORCEINLINE static float Sin(float radians) {
+        return sinf(radians);
     }
 
-    static float Cos(float radians) {
-        return std::cos(radians);
+    BG_FORCEINLINE static float Cos(float radians) {
+        return cosf(radians);
     }
 
-    static float Floor(float value) {
-        return std::floor(value);
+    BG_FORCEINLINE static float Floor(float value) {
+        return floorf(value);
     }
 
-    static float Ceil(float value) {
-        return std::ceil(value);
+    BG_FORCEINLINE static float Ceil(float value) {
+        return ceilf(value);
     }
 
-    static float Round(float value) {
-        return std::round(value);
+    BG_FORCEINLINE static float Round(float value) {
+        return roundf(value);
     }
 
-    static float Sqrt(float value) {
+    BG_FORCEINLINE static float Sqrt(float value) {
         return sqrtf(value);
     }
 };

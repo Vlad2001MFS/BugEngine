@@ -41,6 +41,7 @@ int main(int argc, char **argv) {
     BgPair<double, BgString>(0.0, "DrawFilledCircle    "),
     BgPair<double, BgString>(0.0, "DrawTexturedCircle  "),
     };
+    BgPair<double, BgString> clearColor(0.0, "Clear               ");
 
     FILE *f = fopen("profile.txt", "w");
     BgUint64 timer = 0;
@@ -79,15 +80,23 @@ int main(int argc, char **argv) {
         timer = BgTimer::Start();
         renderDevice->DrawTexturedCircle(texture, circle3, circleRadius3);
         vals[10].first += BgTimer::GetMs(timer);
+
+        timer = BgTimer::Start();
+        renderDevice->Clear(255, 127, 255, 255);
+        clearColor.first += BgTimer::GetMs(timer);
     }
     std::sort(vals, vals + SIZE, [](const BgPair<double, BgString> &v1, const BgPair<double, BgString> &v2) {
         return v1.first > v2.first;
     });
+    double totalTime = 0.0;
     for (int i = 0; i < SIZE; i++) {
         double time = vals[i].first / count;
         const char *name = vals[i].second.GetData();
         fprintf(f, "%.2d. %s - %f\n", i + 1, name, time);
+        totalTime += time;
     }
+    fprintf(f, "    %s - %f\n", clearColor.second.GetData(), clearColor.first / count);
+    fprintf(f, "    Total time           - %f\n", totalTime);
     fclose(f);
 #endif
     BgUint64 fpsTimer = BgTimer::Start();
@@ -102,7 +111,7 @@ int main(int argc, char **argv) {
             }
         }
 
-        renderDevice->ClearColor(127, 127, 127, 255);
+        renderDevice->Clear(127, 127, 127, 255);
         
         renderDevice->DrawPoint(BG_MAP_RGBA(255, 0, 0, 255), point1);
         renderDevice->DrawPoint(BG_MAP_RGBA(255, 0, 0, 255), point2);

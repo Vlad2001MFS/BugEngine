@@ -11,7 +11,7 @@ public:
     BgRenderDevice(const BgWindow *window);
     ~BgRenderDevice();
 
-    void ClearColor(BgUint8 r, BgUint8 g, BgUint8 b, BgUint8 a);
+    void Clear(BgUint8 r, BgUint8 g, BgUint8 b, BgUint8 a);
     void DrawPoint(BgUint32 color, const BgIntVector2 &pos);
     void DrawLine(BgUint32 color, const BgIntVector2 &start, const BgIntVector2 &end);
     void DrawTriangle(BgUint32 color, const BgIntVector2 &v0, const BgIntVector2 &v1, const BgIntVector2 &v2);
@@ -25,9 +25,6 @@ public:
     void DrawTexturedCircle(const BgTexture *texture, const BgIntVector2 &pos, BgUint32 radius);
 
 private:
-    //void mSetPixel(BgUint32 color, BgInt32 x, BgInt32 y);
-    //void mSetPixelLine(BgUint32 color, BgInt32 x, BgInt32 y, BgUint32 count);
-
     const BgWindow *mWindow;
     BgUint32 *mSurfaceColor;
     BgIntVector2 mSize;

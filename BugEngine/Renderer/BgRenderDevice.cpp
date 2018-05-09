@@ -2,7 +2,6 @@
 #include "../Math/BgMath.h"
 #include <cstring>
 #include <algorithm>
-#include <string>
 
 #define _SET_PIXEL(mcolor, mx, my) do { \
     if (mx >= 0 && mx < mSize.x && my >= 0 && my < mSize.y) { \
@@ -53,12 +52,13 @@ BgRenderDevice::~BgRenderDevice() {
     BG_DELETE_ARRAY(mClearColorLine);
 }
 
-void BgRenderDevice::ClearColor(BgUint8 r, BgUint8 g, BgUint8 b, BgUint8 a) {
+void BgRenderDevice::Clear(BgUint8 r, BgUint8 g, BgUint8 b, BgUint8 a) {
     BgUint32 color = BG_MAP_RGBA(r, g, b, a);
     if (mClearColorLine[0] != color) {
         for (int x = 0; x < mSize.x; x++) {
             mClearColorLine[x] = color;
         }
+
     }
     for (int y = 0; y < mSize.y; y++) {
         memcpy(&mSurfaceColor[y*mSize.x], mClearColorLine, mSurfaceColorPitch);
@@ -73,8 +73,10 @@ void BgRenderDevice::DrawLine(BgUint32 color, const BgIntVector2 & start, const 
     int x0 = start.x, y0 = start.y;
     int x1 = end.x, y1 = end.y;
     if (x0 == x1) {
-        int dirY = BgMath::Clamp(y1 - y0, -1, 1);
-        for (int y = y0; y != y1; y += dirY) {
+        if (y0 > y1) {
+            std::swap(y0, y1);
+        }
+        for (int y = y0; y < y1; y++) {
             SET_PIXEL(color, x0, y);
         }
     }
@@ -83,8 +85,11 @@ void BgRenderDevice::DrawLine(BgUint32 color, const BgIntVector2 & start, const 
             std::swap(x0, x1);
             std::swap(y0, y1);
         }
-        int dirX = BgMath::Clamp(x1 - x0, -1, 1);
-        for (int x = x0; x != x1; x += dirX) {
+        if (x0 > x1) {
+            std::swap(x0, x1);
+            std::swap(y0, y1);
+        }
+        for (int x = x0; x < x1; x++) {
             int y = ((y1 - y0)*(x - x0))/(x1 - x0) + y0;
             SET_PIXEL(color, x, y);
         }
@@ -112,9 +117,8 @@ void BgRenderDevice::DrawRect(BgUint32 color, const BgIntVector2 & pos, const Bg
 
 void BgRenderDevice::DrawCircle(BgUint32 color, const BgIntVector2 & pos, BgUint32 radius) {
     int rSq = BgMath::Sq(radius);
-    for (BgUint32 xy = 0; xy < radius; xy++) {
+    for (int xy = 0; xy < radius; xy++) {
         int nxy = static_cast<int>(BgMath::Round(BgMath::Sqrt(static_cast<float>(rSq - BgMath::Sq(xy)))));
-
         SET_PIXEL(color, pos.x + xy, pos.y + nxy); // I
         SET_PIXEL(color, pos.x + nxy, pos.y + xy); // I
         SET_PIXEL(color, pos.x - xy, pos.y + nxy); // II
@@ -171,7 +175,7 @@ void BgRenderDevice::DrawFilledRect(BgUint32 color, const BgIntVector2 & pos, co
 
 void BgRenderDevice::DrawFilledCircle(BgUint32 color, const BgIntVector2 & pos, BgUint32 radius) {
     int rSq = BgMath::Sq(radius);
-    for (BgUint32 xy = 0; xy < radius; xy++) {
+    for (int xy = 0; xy < radius; xy++) {
         int nxy = static_cast<int>(BgMath::Round(BgMath::Sqrt(static_cast<float>(rSq - BgMath::Sq(xy)))));
         SET_PIXEL_LINE(color, pos.x - nxy, pos.y - xy, nxy*2);
         SET_PIXEL_LINE(color, pos.x - nxy, pos.y + xy, nxy*2);
@@ -220,7 +224,8 @@ void BgRenderDevice::DrawTexturedTriangle(const BgTexture * texture, const BgInt
 
     const BgUint32 *td = texture->GetData();
     const BgIntVector2 &ts = texture->GetSize();
-    for (int y = sortedVerts[0].y, v = 0; y <= sortedVerts[2].y; y++, v++) { // цикл отрисовки грани
+    int v = 0;
+    for (int y = sortedVerts[0].y; y <= sortedVerts[2].y; y++) { // цикл отрисовки грани
                                                                              // получаем x-координату самой длинной стороны
         x1 = sortedVerts[0].x + (sortedVerts[2].x - sortedVerts[0].x) * (y - sortedVerts[0].y) / (sortedVerts[2].y - sortedVerts[0].y);
         if (y >= sortedVerts[1].y) { // выясняем, какую сторону проходит скан-линия и вычисляем ее x-координату
@@ -241,6 +246,7 @@ void BgRenderDevice::DrawTexturedTriangle(const BgTexture * texture, const BgInt
                 SET_PIXEL(td[(ty)*ts.x + (tx)], x, y);
             }
         }
+        v++;
     }
 }
 
